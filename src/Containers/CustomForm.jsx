@@ -1,39 +1,21 @@
-import { useState } from "react";
+import useCustomForm from "../hooks/useFrom";
 
 const CustomForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const handleSubmission = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
+  const { register, onSubmit } = useCustomForm();
+  const handleSubmission = (data) => {
     console.log("Form Data:", data);
   };
 
   return (
     <>
-      <form onSubmit={handleSubmission}>
+      <form onSubmit={onSubmit(handleSubmission)}>
         <div>
           <label htmlFor="name">Enter your name: </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+          <input id="name" {...register("name")} required />
         </div>
         <div>
           <label htmlFor="email">Enter your email: </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <input type="email" {...register("email")} id="email" required />
         </div>
         <button type="submit">submit</button>
       </form>
